@@ -15,34 +15,12 @@
             <id>gravity-repo</id>
             <url>http://repo.gravitydevelopment.net</url>
         </repository>
-        <repository>
-            <id>bstats-repo</id>
-            <url>http://repo.bstats.org/content/repositories/releases/</url>
-        </repository>
-        <repository>
-            <id>placeholderapi-repo</id>
-            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-        </repository>
-        <repository>
-            <id>local-file-repo</id>
-            <url>file://${basedir}/internal-file-repo</url>
-        </repository>
     </repositories>
     <dependencies>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.13.1-R0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>net.gravitydevelopment.updater</groupId>
-            <artifactId>updater</artifactId>
-            <version>2.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>1.2</version>
         </dependency>
         <!--Shaded in by bukkit -->
         <dependency>
@@ -51,20 +29,7 @@
             <version>4.1.21.Final</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.8.6</version>
-            <scope>provided</scope>
-        </dependency>
 
-        <!--SPARTAN API-->
-        <dependency>
-            <groupId>me.vagdedes</groupId>
-            <artifactId>spartan-api</artifactId>
-            <version>190</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
     <build>
         <defaultGoal>clean package</defaultGoal>
@@ -94,34 +59,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <artifactSet>
-                                <includes>
-                                    <include>net.gravitydevelopment.updater:*</include>
-                                    <include>org.bstats:*</include>
-                                </includes>
-                            </artifactSet>
-                            <relocations>
-                                <relocation>
-                                    <pattern>org.bstats</pattern>
-                                    <shadedPattern>gvlfm78.plugin.OldCombatMechanics.lib.bstats</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>net.gravitydevelopment.updater</pattern>
-                                    <shadedPattern>gvlfm78.plugin.OldCombatMechanics.lib.updater</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
-    <url>www.spigotmc.org/resources/oldcombatmechanics.19510</url>
 </project>
