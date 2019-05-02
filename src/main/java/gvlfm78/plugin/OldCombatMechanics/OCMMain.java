@@ -1,8 +1,6 @@
 package gvlfm78.plugin.OldCombatMechanics;
 
 import com.codingforcookies.armourequip.ArmourListener;
-import gvlfm78.plugin.OldCombatMechanics.hooks.PlaceholderAPIHook;
-import gvlfm78.plugin.OldCombatMechanics.hooks.api.Hook;
 import gvlfm78.plugin.OldCombatMechanics.module.*;
 import gvlfm78.plugin.OldCombatMechanics.utilities.Config;
 import gvlfm78.plugin.OldCombatMechanics.utilities.Messenger;
@@ -21,7 +19,6 @@ public class OCMMain extends JavaPlugin {
     private OCMConfigHandler CH = new OCMConfigHandler(this);
     private List<Runnable> disableListeners = new ArrayList<>();
     private List<Runnable> enableListeners = new ArrayList<>();
-    private List<Hook> hooks = new ArrayList<>();
 
     public static OCMMain getInstance(){
         return INSTANCE;
@@ -44,9 +41,6 @@ public class OCMMain extends JavaPlugin {
 
         // Register all hooks for integrating with other plugins
         //registerHooks();
-
-        // Initialize all the hooks
-        hooks.forEach(hook -> hook.init(this));
 
         // Set up the command handler
         //getCommand("OldCombatMechanics").setExecutor(new OCMCommandHandler(this, this.getFile()));
@@ -109,12 +103,6 @@ public class OCMMain extends JavaPlugin {
         ModuleLoader.addModule(new ModuleProjectileKnockback(this));
         ModuleLoader.addModule(new ModuleNoLapisEnchantments(this));
         ModuleLoader.addModule(new ModuleDisableEnderpearlCooldown(this));
-    }
-
-    private void registerHooks(){
-        if(getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")){
-            hooks.add(new PlaceholderAPIHook());
-        }
     }
 
     public void upgradeConfig(){
