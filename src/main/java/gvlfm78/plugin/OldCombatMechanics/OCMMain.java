@@ -4,19 +4,15 @@ import com.codingforcookies.armourequip.ArmourListener;
 import gvlfm78.plugin.OldCombatMechanics.hooks.PlaceholderAPIHook;
 import gvlfm78.plugin.OldCombatMechanics.hooks.api.Hook;
 import gvlfm78.plugin.OldCombatMechanics.module.*;
-import gvlfm78.plugin.OldCombatMechanics.updater.ModuleUpdateChecker;
 import gvlfm78.plugin.OldCombatMechanics.utilities.Config;
 import gvlfm78.plugin.OldCombatMechanics.utilities.Messenger;
 import gvlfm78.plugin.OldCombatMechanics.utilities.damage.EntityDamageByEntityListener;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class OCMMain extends JavaPlugin {
 
@@ -47,39 +43,19 @@ public class OCMMain extends JavaPlugin {
         registerModules();
 
         // Register all hooks for integrating with other plugins
-        registerHooks();
+        //registerHooks();
 
         // Initialize all the hooks
         hooks.forEach(hook -> hook.init(this));
 
         // Set up the command handler
-        getCommand("OldCombatMechanics").setExecutor(new OCMCommandHandler(this, this.getFile()));
+        //getCommand("OldCombatMechanics").setExecutor(new OCMCommandHandler(this, this.getFile()));
 
         // Initialise the Messenger utility
         Messenger.initialise(this);
 
         // Initialise Config utility
         Config.initialise(this);
-
-        // MCStats Metrics
-        try{
-            MetricsLite metrics = new MetricsLite(this);
-            metrics.start();
-        } catch(IOException e){
-            // Failed to submit the stats
-        }
-
-        //BStats Metrics
-        Metrics metrics = new Metrics(this);
-
-        metrics.addCustomChart(
-                new Metrics.SimpleBarChart(
-                        "enabled_modules",
-                        () -> ModuleLoader.getModules().stream()
-                                .filter(Module::isEnabled)
-                                .collect(Collectors.toMap(Module::toString, module -> 1))
-                )
-        );
 
         enableListeners.forEach(Runnable::run);
 
@@ -103,7 +79,7 @@ public class OCMMain extends JavaPlugin {
 
     private void registerModules(){
         // Update Checker (also a module so we can use the dynamic registering/unregistering)
-        ModuleLoader.addModule(new ModuleUpdateChecker(this, this.getFile()));
+        //////ModuleLoader.addModule(new ModuleUpdateChecker(this, this.getFile()));
 
         // Module listeners
         ModuleLoader.addModule(new ArmourListener(this));
@@ -114,8 +90,10 @@ public class OCMMain extends JavaPlugin {
         ModuleLoader.addModule(new ModuleOldToolDamage(this));
         ModuleLoader.addModule(new ModuleSwordSweep(this));
 
-        ModuleLoader.addModule(new ModuleOldPotionEffects(this));
+        //////ModuleLoader.addModule(new ModuleOldPotionEffects(this));
+
         ModuleLoader.addModule(new EntityDamageByEntityListener(this));
+
         ModuleLoader.addModule(new ModuleGoldenApple(this));
         ModuleLoader.addModule(new ModuleFishingKnockback(this));
         ModuleLoader.addModule(new ModulePlayerRegen(this));

@@ -16,7 +16,7 @@ import java.util.Locale;
  */
 public class ModuleOldToolDamage extends Module {
 
-    private static final String[] WEAPONS = {"sword", "axe", "pickaxe", "spade", "hoe"};
+    private final String[] WEAPONS = {"sword", "axe", "pickaxe", "spade", "hoe"};
 
     public ModuleOldToolDamage(OCMMain plugin){
         super(plugin, "old-tool-damage");
@@ -24,34 +24,29 @@ public class ModuleOldToolDamage extends Module {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityDamaged(OCMEntityDamageByEntityEvent event){
-        Entity damager = event.getDamager();
-
-        World world = damager.getWorld();
-
-        if(!isEnabled(world)) return;
-
         Material weaponMaterial = event.getWeapon().getType();
 
-        if(!isTool(weaponMaterial)) return;
+        if (!isTool(weaponMaterial)) {
+            return;
+        }
 
         double weaponDamage = WeaponDamages.getDamage(weaponMaterial);
-        if(weaponDamage <= 0) weaponDamage = 1;
-
-        double oldBaseDamage = event.getBaseDamage();
+        if (weaponDamage <= 0) {
+            weaponDamage = 1;
+        }
 
         event.setBaseDamage(weaponDamage);
-        debug("Old tool damage: " + oldBaseDamage + " New tool damage: " + weaponDamage, damager);
 
         // Set sharpness to 1.8 damage value
-        double newSharpnessDamage = DamageUtils.getOldSharpnessDamage(event.getSharpnessLevel());
-        debug("Old sharpness damage: " + event.getSharpnessDamage() + " New: " + newSharpnessDamage, damager);
-        event.setSharpnessDamage(newSharpnessDamage);
+        //event.setSharpnessDamage(DamageUtils.getOldSharpnessDamage(event.getSharpnessLevel()));
     }
 
     private boolean isTool(Material material){
-        for(String type : WEAPONS)
-            if(isOfType(material, type))
+        for(String type : WEAPONS) {
+            if (isOfType(material, type)) {
                 return true;
+            }
+        }
 
         return false;
     }

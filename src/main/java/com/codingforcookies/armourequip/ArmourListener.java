@@ -77,17 +77,13 @@ public class ArmourListener extends Module implements Listener {
                     equipping = false;
 
                 if(newArmourType.equals(ArmourType.HELMET)
-                        && (equipping ? e.getWhoClicked().getInventory().getHelmet() == null
-                        : e.getWhoClicked().getInventory().getHelmet() != null)
+                        && (equipping == (e.getWhoClicked().getInventory().getHelmet() == null))
                         || newArmourType.equals(ArmourType.CHESTPLATE)
-                        && (equipping ? e.getWhoClicked().getInventory().getChestplate() == null
-                        : e.getWhoClicked().getInventory().getChestplate() != null)
+                        && (equipping == (e.getWhoClicked().getInventory().getChestplate() == null))
                         || newArmourType.equals(ArmourType.LEGGINGS)
-                        && (equipping ? e.getWhoClicked().getInventory().getLeggings() == null
-                        : e.getWhoClicked().getInventory().getLeggings() != null)
+                        && (equipping == (e.getWhoClicked().getInventory().getLeggings() == null))
                         || newArmourType.equals(ArmourType.BOOTS)
-                        && (equipping ? e.getWhoClicked().getInventory().getBoots() == null
-                        : e.getWhoClicked().getInventory().getBoots() != null)){
+                        && (equipping == (e.getWhoClicked().getInventory().getBoots() == null))){
 
                     ArmourEquipEvent armourEquipEvent = new ArmourEquipEvent((Player) e.getWhoClicked(),
                             EquipMethod.SHIFT_CLICK, newArmourType, equipping ? null : e.getCurrentItem(),
@@ -185,43 +181,49 @@ public class ArmourListener extends Module implements Listener {
         if(block.getType().equals(Material.DISPENSER)){
 
             ArmourType type = ArmourType.matchType(e.getItem());
+            if (type == null) {
+                return;
+            }
+
             if(ArmourType.matchType(e.getItem()) != null){
+                return;
+            }
 
-                Location loc = block.getLocation();
+            Location loc = block.getLocation();
 
-                for(Player p : loc.getWorld().getPlayers()){
-                    if(loc.getBlockY() - p.getLocation().getBlockY() >= -1 && loc.getBlockY() - p.getLocation().getBlockY() <= 1){
-                        if(p.getInventory().getHelmet() == null && type.equals(ArmourType.HELMET)
-                                || p.getInventory().getChestplate() == null && type.equals(ArmourType.CHESTPLATE)
-                                || p.getInventory().getLeggings() == null && type.equals(ArmourType.LEGGINGS)
-                                || p.getInventory().getBoots() == null && type.equals(ArmourType.BOOTS)){
+            for(Player p : loc.getWorld().getPlayers()){
+                if(loc.getBlockY() - p.getLocation().getBlockY() >= -1 && loc.getBlockY() - p.getLocation().getBlockY() <= 1){
+                    if(p.getInventory().getHelmet() == null && type.equals(ArmourType.HELMET)
+                            || p.getInventory().getChestplate() == null && type.equals(ArmourType.CHESTPLATE)
+                            || p.getInventory().getLeggings() == null && type.equals(ArmourType.LEGGINGS)
+                            || p.getInventory().getBoots() == null && type.equals(ArmourType.BOOTS)){
 
-                            org.bukkit.block.Dispenser dispenser = (org.bukkit.block.Dispenser) block.getState();
-                            org.bukkit.material.Dispenser dis = (org.bukkit.material.Dispenser) dispenser.getData();
-                            BlockFace directionFacing = dis.getFacing();
+                        org.bukkit.block.Dispenser dispenser = (org.bukkit.block.Dispenser) block.getState();
+                        org.bukkit.material.Dispenser dis = (org.bukkit.material.Dispenser) dispenser.getData();
+                        BlockFace directionFacing = dis.getFacing();
 
-                            if(directionFacing == BlockFace.EAST && p.getLocation().getBlockX() != loc.getBlockX()
-                                    && p.getLocation().getX() <= loc.getX() + 2.3 && p.getLocation().getX() >= loc.getX()
-                                    || directionFacing == BlockFace.WEST && p.getLocation().getX() >= loc.getX() - 1.3
-                                    && p.getLocation().getX() <= loc.getX()
-                                    || directionFacing == BlockFace.SOUTH && p.getLocation().getBlockZ() != loc.getBlockZ()
-                                    && p.getLocation().getZ() <= loc.getZ() + 2.3
-                                    && p.getLocation().getZ() >= loc.getZ()
-                                    || directionFacing == BlockFace.NORTH && p.getLocation().getZ() >= loc.getZ() - 1.3
-                                    && p.getLocation().getZ() <= loc.getZ()){
+                        if(directionFacing == BlockFace.EAST && p.getLocation().getBlockX() != loc.getBlockX()
+                                && p.getLocation().getX() <= loc.getX() + 2.3 && p.getLocation().getX() >= loc.getX()
+                                || directionFacing == BlockFace.WEST && p.getLocation().getX() >= loc.getX() - 1.3
+                                && p.getLocation().getX() <= loc.getX()
+                                || directionFacing == BlockFace.SOUTH && p.getLocation().getBlockZ() != loc.getBlockZ()
+                                && p.getLocation().getZ() <= loc.getZ() + 2.3
+                                && p.getLocation().getZ() >= loc.getZ()
+                                || directionFacing == BlockFace.NORTH && p.getLocation().getZ() >= loc.getZ() - 1.3
+                                && p.getLocation().getZ() <= loc.getZ()){
 
-                                ArmourEquipEvent armourEquipEvent = new ArmourEquipEvent(p, EquipMethod.DISPENSER, ArmourType.matchType(e.getItem()), null, e.getItem());
-                                Bukkit.getServer().getPluginManager().callEvent(armourEquipEvent);
+                            ArmourEquipEvent armourEquipEvent = new ArmourEquipEvent(p, EquipMethod.DISPENSER, ArmourType.matchType(e.getItem()), null, e.getItem());
+                            Bukkit.getServer().getPluginManager().callEvent(armourEquipEvent);
 
-                                if(armourEquipEvent.isCancelled())
-                                    e.setCancelled(true);
+                            if(armourEquipEvent.isCancelled())
+                                e.setCancelled(true);
 
-                                return;
-                            }
+                            return;
                         }
                     }
                 }
             }
+
         }
     }
 }

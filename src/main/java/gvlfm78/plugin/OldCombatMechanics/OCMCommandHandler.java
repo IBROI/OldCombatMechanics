@@ -41,9 +41,6 @@ public class OCMCommandHandler implements CommandExecutor {
 
             Messenger.send(sender, ChatColor.DARK_GRAY + Messenger.HORIZONTAL_BAR);
 
-            // Check for updates
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> new UpdateChecker(plugin, pluginFile).sendUpdateMessages(sender));
-
             return true;
         }
 

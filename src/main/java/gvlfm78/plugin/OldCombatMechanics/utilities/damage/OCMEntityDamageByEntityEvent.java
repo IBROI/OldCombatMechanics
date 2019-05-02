@@ -16,8 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import static gvlfm78.plugin.OldCombatMechanics.utilities.Messenger.debug;
-
 public class OCMEntityDamageByEntityEvent extends Event implements Cancellable {
 
     private boolean cancelled;
@@ -38,16 +36,11 @@ public class OCMEntityDamageByEntityEvent extends Event implements Cancellable {
 
     private ItemStack weapon;
     private int sharpnessLevel;
-    private int strengthLevel;
-
 
     private double baseDamage = 0, mobEnchantmentsDamage = 0, sharpnessDamage = 0, criticalMultiplier = 1;
     private double strengthModifier = 0, weaknessModifier = 0;
 
     // In 1.9 strength modifier is an addend, in 1.8 it is a multiplier and addend (+130%)
-    private boolean isStrengthModifierMultiplier = false;
-    private boolean isStrengthModifierAddend = true;
-    private boolean isWeaknessModifierMultiplier = false;
 
     public OCMEntityDamageByEntityEvent(Entity damager, Entity damagee, DamageCause cause, double rawDamage){
 
@@ -56,7 +49,7 @@ public class OCMEntityDamageByEntityEvent extends Event implements Cancellable {
         this.cause = cause;
         this.rawDamage = rawDamage;
 
-        if(!(damager instanceof LivingEntity)){
+        if (!(damager instanceof LivingEntity)){
             setCancelled(true);
             return;
         }
@@ -66,53 +59,32 @@ public class OCMEntityDamageByEntityEvent extends Event implements Cancellable {
         EntityEquipment equipment = le.getEquipment();
         weapon = equipment.getItemInMainHand();
         // Yay paper. Why do you need to return null here?
-        if(weapon == null){
+        if (weapon == null) {
             weapon = new ItemStack(Material.AIR);
         }
 
-        EntityType entity = damagee.getType();
-
-        debug(le, "Raw damage: " + rawDamage);
-
-        mobEnchantmentsDamage = MobDamage.applyEntityBasedDamage(entity, weapon, rawDamage) - rawDamage;
-
+        mobEnchantmentsDamage = MobDamage.applyEntityBasedDamage(damagee.getType(), weapon);
         sharpnessLevel = weapon.getEnchantmentLevel(Enchantment.DAMAGE_ALL);
         sharpnessDamage = DamageUtils.getNewSharpnessDamage(sharpnessLevel);
 
-        debug(le, "Mob: " + mobEnchantmentsDamage + " Sharpness: " + sharpnessDamage);
-
-        //Amount of damage including potion effects and critical hits
-        double tempDamage = rawDamage - mobEnchantmentsDamage - sharpnessDamage;
-
-        debug(le, "No ench damage: " + tempDamage);
-
         //Check if it's a critical hit
-        if(le instanceof Player){
+        if (le instanceof Player){
             Player player = (Player) le;
-            if(DamageUtils.isCriticalHit(player)){
+            if (DamageUtils.isCriticalHit(player)){
                 criticalMultiplier = 1.5;
-                tempDamage /= 1.5;
-                debug(player, "Critical hit detected");
             }
         }
 
         //amplifier 0 = Strength I    amplifier 1 = Strength II
-        int amplifier = PotionEffects.get(le, PotionEffectType.INCREASE_DAMAGE)
+        strengthModifier = (PotionEffects.get(le, PotionEffectType.INCREASE_DAMAGE)
                 .map(PotionEffect::getAmplifier)
-                .orElse(-1);
+                .orElse(-1) + 1) * 3;
 
-        strengthLevel = ++amplifier;
+        weaknessModifier = (PotionEffects.get(le, PotionEffectType.WEAKNESS)
+                .map(PotionEffect::getAmplifier)
+                .orElse(-1) + 1) * -4;
 
-        strengthModifier = strengthLevel * 3;
-
-        debug(le, "Strength Modifier: " + strengthModifier);
-
-        if(le.hasPotionEffect(PotionEffectType.WEAKNESS)) weaknessModifier = -4;
-
-        debug(le, "Weakness Modifier: " + weaknessModifier);
-
-        baseDamage = tempDamage + weaknessModifier - strengthModifier;
-        debug(le, "Base tool damage: " + baseDamage);
+        baseDamage = 1;
     }
 
     public Entity getDamager(){
@@ -143,44 +115,12 @@ public class OCMEntityDamageByEntityEvent extends Event implements Cancellable {
         return strengthModifier;
     }
 
-    public void setStrengthModifier(double strengthModifier){
-        this.strengthModifier = strengthModifier;
-    }
-
-    public int getStrengthLevel(){
-        return strengthLevel;
-    }
-
     public double getWeaknessModifier(){
         return weaknessModifier;
     }
 
     public void setWeaknessModifier(double weaknessModifier){
         this.weaknessModifier = weaknessModifier;
-    }
-
-    public boolean isStrengthModifierMultiplier(){
-        return isStrengthModifierMultiplier;
-    }
-
-    public void setIsStrengthModifierMultiplier(boolean isStrengthModifierMultiplier){
-        this.isStrengthModifierMultiplier = isStrengthModifierMultiplier;
-    }
-
-    public void setIsStrengthModifierAddend(boolean isStrengthModifierAddend){
-        this.isStrengthModifierAddend = isStrengthModifierAddend;
-    }
-
-    public boolean isWeaknessModifierMultiplier(){
-        return isWeaknessModifierMultiplier;
-    }
-
-    public void setIsWeaknessModifierMultiplier(boolean weaknessModifierMultiplier){
-        isWeaknessModifierMultiplier = weaknessModifierMultiplier;
-    }
-
-    public boolean isStrengthModifierAddend(){
-        return isStrengthModifierAddend;
     }
 
     public double getBaseDamage(){

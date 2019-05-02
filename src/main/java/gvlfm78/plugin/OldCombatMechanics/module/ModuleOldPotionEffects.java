@@ -2,26 +2,12 @@ package gvlfm78.plugin.OldCombatMechanics.module;
 
 import gvlfm78.plugin.OldCombatMechanics.OCMMain;
 import gvlfm78.plugin.OldCombatMechanics.utilities.ConfigUtils;
-import gvlfm78.plugin.OldCombatMechanics.utilities.damage.OCMEntityDamageByEntityEvent;
 import gvlfm78.plugin.OldCombatMechanics.utilities.potions.GenericPotionDurations;
 import gvlfm78.plugin.OldCombatMechanics.utilities.potions.PotionDurations;
 import gvlfm78.plugin.OldCombatMechanics.utilities.potions.PotionEffects;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.ThrownPotion;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import java.util.EnumSet;
@@ -59,6 +45,7 @@ public class ModuleOldPotionEffects extends Module {
      * Change the duration using values defined in config
      * for drinking potions
      */
+    /*
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDrinksPotion(PlayerItemConsumeEvent event){
         ItemStack potionItem = event.getItem();
@@ -105,10 +92,13 @@ public class ModuleOldPotionEffects extends Module {
             playerInventory.setItemInOffHand(potionItem);
     }
 
+     */
+
     /**
      * Change the duration using values defined in config
      * for splash potions
      */
+    /*
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPotionSplash(PotionSplashEvent event){
         ThrownPotion thrownPotion = event.getPotion();
@@ -129,6 +119,7 @@ public class ModuleOldPotionEffects extends Module {
                     .forEach(livingEntity -> setNewPotionEffect(livingEntity, newEffect));
         }
     }
+    */
 
     private void setNewPotionEffect(LivingEntity livingEntity, PotionEffect potionEffect){
         if(livingEntity.hasPotionEffect(potionEffect.getType())){
@@ -170,8 +161,10 @@ public class ModuleOldPotionEffects extends Module {
         return duration * 20;
     }
 
+    /*
     @EventHandler(ignoreCancelled = true)
-    public void onDamageByEntity(OCMEntityDamageByEntityEvent event){
+    public void onDamageByEntity(OCMEntityDamageByEntityEvent event) {  //nothing
+
         Entity damager = event.getDamager();
 
         double weaknessModifier = event.getWeaknessModifier();
@@ -192,5 +185,7 @@ public class ModuleOldPotionEffects extends Module {
             event.setStrengthModifier(newStrengthModifier);
             debug("Old strength modifier: " + strengthModifier + " New: " + newStrengthModifier, damager);
         }
+
     }
+     */
 }

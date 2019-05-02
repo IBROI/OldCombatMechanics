@@ -38,46 +38,29 @@ public class EntityDamageByEntityListener extends Module {
 
         plugin.getServer().getPluginManager().callEvent(e);
 
-        if(e.isCancelled()) return;
+        if (e.isCancelled()) {
+            return;
+        }
 
         //Re-calculate modified damage and set it back to original event
         // Damage order: base + potion effects + critical hit + enchantments + armour effects
         double newDamage = e.getBaseDamage();
 
-        debug("Base: " + e.getBaseDamage(), damager);
-
         //Weakness potion
-        double weaknessModifier = e.getWeaknessModifier();
-        if(e.isWeaknessModifierMultiplier()) newDamage *= weaknessModifier;
-        else newDamage += weaknessModifier;
-
-        debug("Weak: " + e.getWeaknessModifier(), damager);
+        newDamage += e.getWeaknessModifier();
 
         //Strength potion
-        debug("Strength level: " + e.getStrengthLevel(), damager);
-        double strengthModifier = e.getStrengthModifier() * e.getStrengthLevel();
-        if(!e.isStrengthModifierMultiplier()) newDamage += strengthModifier;
-        else if(e.isStrengthModifierAddend()) newDamage *= ++strengthModifier;
-        else newDamage *= strengthModifier;
-
-        debug("Strength: " + strengthModifier, damager);
+        newDamage += e.getStrengthModifier();
 
         //Critical hit
         newDamage *= e.getCriticalMultiplier();
 
-        debug("Crit: " + e.getCriticalMultiplier(), damager);
-
         //Enchantments
         newDamage += e.getMobEnchantmentsDamage() + e.getSharpnessDamage();
 
-        debug("Mob " + e.getMobEnchantmentsDamage() + " Sharp: " + e.getSharpnessDamage(), damager);
-
-        if(newDamage < 0){
-            debug("Damage was " + newDamage + " setting to 0", damager);
+        if (newDamage < 0) {
             newDamage = 0;
         }
-
-        debug("New Damage: " + newDamage, damager);
 
         event.setDamage(newDamage);
     }

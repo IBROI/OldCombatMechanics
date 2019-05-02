@@ -9,7 +9,7 @@
 
 # This is to toggle the update checker
 update-checker:
-  enabled: true
+  enabled: false
   # Modes: auto, bukkit, spigot
   mode: auto
     
@@ -49,7 +49,7 @@ disable-sword-sweep:
   
 disable-crafting:
   # Disable the crafting of specified items
-  enabled: true
+  enabled: false
   worlds: []
   # List of denied items
   denied: [shield]
@@ -57,7 +57,7 @@ disable-crafting:
 disable-offhand:
   # Disable the usage of the offhand
   # Won't affect sword-blocking module
-  enabled: true
+  enabled: false
   worlds: []
   # Whether the following list blocks items or allows them
   whitelist: true
@@ -72,7 +72,7 @@ old-brewing-stand:
   
 no-lapis-enchantments:
   # Automatically adds lapis to enchantment tables upon opening
-  enabled: false
+  enabled: true
   worlds: []
   # Whether to only allow this for players with oldcombatmechanics.nolapis permission
   usePermission: false
@@ -129,7 +129,7 @@ old-tool-damage:
 
 sword-blocking:
   # This is to allow players to block with swords again by getting a shield while they hold right click with a sword
-  enabled: true
+  enabled: false
   worlds: []
   # How often, it ticks, should OCM check if the player is still blocking with the shield and remove it if not
   # If this is too fast the player will have their shield disappear before they're able to block again causing a slight delay
@@ -155,7 +155,7 @@ shield-damage-reduction:
 old-golden-apples:
   # This is to change the behaviour / crafting of golden apples to how it was in pre-1.9
   # WARNING: If on 1.12 or above and you disable this module you must reload the server for the recipe to disappear
-  enabled: true
+  enabled: false
   worlds: []
   # If you want to allow enchanted golden apple crafting
   enchanted-golden-apple-crafting: true
@@ -222,7 +222,7 @@ projectile-knockback:
 old-player-regen:
   # This is to make players' regeneration act mostly like it did in pre-1.9
   # It's hard to make it behave exactly like before, but in general this makes it work like in pre-1.9
-  enabled: true
+  enabled: false
   worlds: []
   # How often, in seconds, a player should regenerate health
   frequency: 3
@@ -270,7 +270,7 @@ old-armour-strength:
 disable-projectile-randomness:
   # This is to remove projectile randomness while firing arrows with a bow
   # This is actually a very old feature and has been in the game for quite some time
-  enabled: false
+  enabled: true
   worlds: []
     
 disable-bow-boost:
@@ -282,7 +282,7 @@ disable-bow-boost:
 
 old-potion-effects:
   # This is to restore the 1.8 potion effects and duration
-  enabled: true
+  enabled: false
 
 ### DURATION: (in seconds)
   potion-durations:
