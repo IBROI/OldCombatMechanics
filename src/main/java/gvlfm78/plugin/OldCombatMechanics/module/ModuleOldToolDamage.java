@@ -1,12 +1,9 @@
 package gvlfm78.plugin.OldCombatMechanics.module;
 
 import gvlfm78.plugin.OldCombatMechanics.OCMMain;
-import gvlfm78.plugin.OldCombatMechanics.utilities.damage.DamageUtils;
 import gvlfm78.plugin.OldCombatMechanics.utilities.damage.OCMEntityDamageByEntityEvent;
 import gvlfm78.plugin.OldCombatMechanics.utilities.damage.WeaponDamages;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 
 import java.util.Locale;

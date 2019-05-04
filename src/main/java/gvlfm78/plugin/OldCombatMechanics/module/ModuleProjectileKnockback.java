@@ -17,9 +17,9 @@ public class ModuleProjectileKnockback extends Module {
         super(plugin, "projectile-knockback");
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onEntityHit(EntityDamageByEntityEvent e){
-        if(!isEnabled(e.getEntity().getWorld())) return;
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onEntityHit(EntityDamageByEntityEvent e) {
+        //if(!isEnabled(e.getEntity().getWorld())) return;
 
         EntityType type = e.getDamager().getType();
 
