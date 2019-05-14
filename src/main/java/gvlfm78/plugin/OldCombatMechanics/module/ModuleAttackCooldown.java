@@ -54,7 +54,7 @@ public class ModuleAttackCooldown extends Module {
      *
      * @param player the player to set it for
      */
-    private void adjustAttackSpeed(Player player){
+    private void adjustAttackSpeed(Player player) {
         World world = player.getWorld();
 
         double attackSpeed = Config.moduleEnabled("disable-attack-cooldown", world)
