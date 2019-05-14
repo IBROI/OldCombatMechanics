@@ -67,11 +67,15 @@ public class OCMEntityDamageByEntityEvent extends Event implements Cancellable {
         sharpnessLevel = weapon.getEnchantmentLevel(Enchantment.DAMAGE_ALL);
         sharpnessDamage = DamageUtils.getNewSharpnessDamage(sharpnessLevel);
 
+        //Amount of damage including potion effects and critical hits
+        double tempDamage = rawDamage - mobEnchantmentsDamage - sharpnessDamage;
+
         //Check if it's a critical hit
         if (le instanceof Player){
             Player player = (Player) le;
             if (DamageUtils.isCriticalHit(player)){
                 criticalMultiplier = 1.5;
+                tempDamage /= 1.5;
             }
         }
 
@@ -84,7 +88,7 @@ public class OCMEntityDamageByEntityEvent extends Event implements Cancellable {
                 .map(PotionEffect::getAmplifier)
                 .orElse(-1) + 1) * -4;
 
-        baseDamage = 1;
+        baseDamage = tempDamage + weaknessModifier - strengthModifier;
     }
 
     public Entity getDamager(){
