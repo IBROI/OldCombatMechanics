@@ -95,12 +95,12 @@ public class ModuleFishingKnockback extends Module {
         double damage = module().getDouble("damage");
         if(damage < 0) damage = 0.2;
 
-        disableFish.add(player.getName());
+        //disableFish.add(player.getName());
 
         EntityDamageEvent event = makeEvent(rodder, player, damage);
         Bukkit.getPluginManager().callEvent(event);
 
-        disableFish.remove(player.getName());
+        //disableFish.remove(player.getName());
 
         if (module().getBoolean("checkCancelled") && event.isCancelled()){
 
@@ -121,6 +121,7 @@ public class ModuleFishingKnockback extends Module {
         player.setVelocity(calculateKnockbackVelocity(player.getVelocity(), player.getLocation(), hook.getLocation()));
     }
 
+    /*
     private double horizMultiplier = 0.23;
     private double vertMultiplier = 0.35;
     private double sprintMultiplierHoriz = 2.15;
@@ -204,6 +205,8 @@ public class ModuleFishingKnockback extends Module {
         this.damaged.remove(player.getName());
         this.sprintKb.remove(player.getName());
     }
+
+     */
 
     private Vector calculateKnockbackVelocity(Vector currentVelocity, Location player, Location hook){
         double xDistance = hook.getX() - player.getX();
