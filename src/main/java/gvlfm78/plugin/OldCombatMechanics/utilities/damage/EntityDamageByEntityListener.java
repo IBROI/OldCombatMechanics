@@ -30,7 +30,7 @@ public class EntityDamageByEntityListener extends Module {
         this.enabled = enabled;
     }
 
-    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler (priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event){
         Entity damager = event.getDamager();
         OCMEntityDamageByEntityEvent e = new OCMEntityDamageByEntityEvent

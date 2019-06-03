@@ -28,8 +28,9 @@ public class ModuleOldArmourStrength extends Module {
         double newReduction = armourPoints * 0.04 * -
                 (e.getDamage() + e.getDamage(EntityDamageEvent.DamageModifier.BLOCKING)); //todo don't hardcode this value
 
-        if(e.isApplicable(EntityDamageEvent.DamageModifier.ARMOR))
+        if(e.isApplicable(EntityDamageEvent.DamageModifier.ARMOR)) {
             e.setDamage (EntityDamageEvent.DamageModifier.ARMOR, newReduction);
+        }
 
         INSTANCE.debug("Armour points: " + armourPoints
                 + " Reduction: " + armourDamageReduction
